@@ -1,0 +1,13 @@
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: #f0f4f8; /* mismo color de fondo usado en todos los componentes */
+
+  /* Tipografía del sistema: usa la fuente nativa de cada plataforma */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
