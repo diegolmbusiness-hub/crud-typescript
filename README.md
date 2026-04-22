@@ -1,42 +1,113 @@
 # Sistema de Gastos Personales
-**Participantes:** Ronald Bernechea Beato (2024-0228) | Diego López (2023-0984)  
+
+Aplicación web fullstack para la gestión de ingresos y gastos personales. Permite a los usuarios registrar, consultar y analizar sus movimientos financieros, facilitando el control y organización de sus finanzas.
+
+---
+
+## Información Académica
+
 **Asignatura:** Programación III
+**Facilitador:** Emilio José Peña López
+
+**Participantes:**
+
+* Ronald Bernechea Beato (2024-0228)
+* Diego López (2023-0984)
+
+**Fecha:** 6 de abril de 2026
 
 ---
 
-## Requisitos previos
-- Node.js v18+
-- PostgreSQL instalado y corriendo
-- npm
+## Descripción
+
+El Sistema de Gastos Personales es una aplicación web que permite llevar un control detallado de los ingresos y gastos de un usuario.
+
+El sistema ofrece:
+
+* Registro de ingresos y gastos
+* Clasificación por categorías
+* Visualización de balance general
+* Consulta de movimientos financieros
+* Filtros por fecha y categoría
+
+Su objetivo es mejorar la organización financiera y promover un uso responsable del dinero.
 
 ---
 
-## 1. Base de datos
+## Requisitos Previos
 
-1. Abre pgAdmin o psql
-2. Crea una base de datos llamada `gastos_personales`
-3. Ejecuta el archivo `database.sql` en esa base de datos:
-   ```sql
-   -- En psql:
-   \c gastos_personales
-   \i database.sql
-   ```
+* Node.js v18 o superior
+* PostgreSQL instalado y en ejecución
+* npm
 
 ---
 
-## 2. Backend
+## Configuración del Proyecto
+
+### 1. Clonar repositorio
+
+```bash
+git clone https://github.com/diegolmbusiness-hub/gastos-personales.git
+cd gastos-personales
+```
+
+---
+
+## Configuración de la Base de Datos
+
+### Crear base de datos
+
+1. Abrir pgAdmin o psql
+2. Crear la base de datos:
+
+```sql
+CREATE DATABASE gastos_personales;
+```
+
+---
+
+### Ejecutar script SQL
+
+Ejecutar el archivo `database.sql`:
+
+```sql
+\c gastos_personales
+\i database.sql
+```
+
+Este script crea:
+
+* Tabla de usuarios
+* Tabla de ingresos
+* Tabla de gastos
+* Tabla de categorías
+* Datos iniciales de categorías
+
+---
+
+## Backend
+
+### Instalación y ejecución
 
 ```bash
 cd backend
 npm install
 cp .env.example .env
-# Edita .env con tus datos de PostgreSQL
 npm run dev
 ```
 
-El backend corre en: `http://localhost:3001`
+Servidor disponible en:
 
-### Variables de entorno (.env)
+```
+http://localhost:3001
+```
+
+---
+
+### Variables de entorno
+
+Configurar el archivo `.env`:
+
 ```
 PORT=3001
 DB_USER=postgres
@@ -49,7 +120,9 @@ JWT_SECRET=cambia_esta_clave_secreta
 
 ---
 
-## 3. Frontend
+## Frontend
+
+### Instalación y ejecución
 
 ```bash
 cd frontend
@@ -57,63 +130,121 @@ npm install
 npm start
 ```
 
-El frontend corre en: `http://localhost:3000`
+Aplicación disponible en:
+
+```
+http://localhost:3000
+```
 
 ---
 
-## Estructura del proyecto
+## Arquitectura del Proyecto
+
+### Frontend
+
+* Interfaz de usuario responsiva
+* Formularios de autenticación
+* Panel principal (dashboard)
+* Gestión de ingresos y gastos
+
+### Backend
+
+* API RESTful
+* Autenticación con JWT
+* Controladores para usuarios, ingresos y gastos
+* Manejo de lógica del sistema
+
+### Base de Datos
+
+* Usuarios
+* Ingresos
+* Gastos
+* Categorías
+
+---
+
+## Estructura del Proyecto
 
 ```
 gastos-personales/
-├── database.sql                  # Script de la base de datos
+├── database.sql
 ├── backend/
 │   ├── src/
-│   │   ├── index.ts              # Servidor principal
-│   │   ├── database/database.ts  # Conexión a PostgreSQL
+│   │   ├── index.ts
+│   │   ├── database/database.ts
 │   │   ├── controllers/
-│   │   │   ├── authController.ts         # Login, signup
-│   │   │   └── movimientosController.ts  # Ingresos, gastos, resumen
+│   │   │   ├── authController.ts
+│   │   │   └── movimientosController.ts
 │   │   ├── routes/
-│   │   │   ├── auth.ts           # Rutas de autenticación
-│   │   │   └── movimientos.ts    # Rutas de ingresos/gastos
+│   │   │   ├── auth.ts
+│   │   │   └── movimientos.ts
 │   │   └── utils/
-│   │       ├── authMiddleware.ts  # Verificación JWT
-│   │       └── passwordUtils.ts  # bcrypt hash/compare
+│   │       ├── authMiddleware.ts
+│   │       └── passwordUtils.ts
 │   └── .env.example
 └── frontend/
     ├── public/index.html
     └── src/
-        ├── index.tsx             # Entrada de la app
-        ├── App.tsx               # Rutas principales
-        ├── hooks/useAuth.ts      # Lógica de autenticación
+        ├── index.tsx
+        ├── App.tsx
+        ├── hooks/useAuth.ts
         └── components/
-            ├── LoginForm.tsx     # Formulario de login
-            ├── SignupForm.tsx    # Formulario de registro
-            └── Dashboard.tsx     # Panel principal completo
+            ├── LoginForm.tsx
+            ├── SignupForm.tsx
+            └── Dashboard.tsx
 ```
 
 ---
 
 ## Endpoints del API
 
-| Método | Ruta | Descripción |
-|--------|------|-------------|
-| POST | /auth/signup | Registro de usuario |
-| POST | /auth/login | Inicio de sesión |
-| GET | /auth/user | Datos del usuario autenticado |
-| GET | /api/resumen | Balance total del usuario |
-| GET | /api/categorias | Lista de categorías |
-| GET | /api/ingresos | Listar ingresos (filtro: desde, hasta) |
-| POST | /api/ingresos | Crear ingreso |
-| DELETE | /api/ingresos/:id | Eliminar ingreso |
-| GET | /api/gastos | Listar gastos (filtro: desde, hasta, categoria_id) |
-| POST | /api/gastos | Crear gasto |
-| DELETE | /api/gastos/:id | Eliminar gasto |
+| Método | Ruta              | Descripción                 |
+| ------ | ----------------- | --------------------------- |
+| POST   | /auth/signup      | Registro de usuario         |
+| POST   | /auth/login       | Inicio de sesión            |
+| GET    | /auth/user        | Obtener usuario autenticado |
+| GET    | /api/resumen      | Balance total               |
+| GET    | /api/categorias   | Listar categorías           |
+| GET    | /api/ingresos     | Listar ingresos             |
+| POST   | /api/ingresos     | Crear ingreso               |
+| DELETE | /api/ingresos/:id | Eliminar ingreso            |
+| GET    | /api/gastos       | Listar gastos               |
+| POST   | /api/gastos       | Crear gasto                 |
+| DELETE | /api/gastos/:id   | Eliminar gasto              |
 
 ---
 
-## Tecnologías utilizadas
-- **Frontend:** React + TypeScript + Material UI
-- **Backend:** Node.js + Express + TypeScript
-- **Base de datos:** PostgreSQL
-- **Autenticación:** JWT + bcrypt
+## Tecnologías Utilizadas
+
+* Frontend: React, TypeScript, Material UI
+* Backend: Node.js, Express, TypeScript
+* Base de datos: PostgreSQL
+* Autenticación: JSON Web Token (JWT)
+* Seguridad: bcrypt
+
+---
+
+## Funcionalidades
+
+* Registro e inicio de sesión de usuarios
+* Gestión de ingresos
+* Gestión de gastos
+* Clasificación por categorías
+* Visualización de balance
+* Filtros de búsqueda
+* Persistencia en base de datos
+
+---
+
+## Riesgos del Proyecto
+
+* Fallos en la conexión a la base de datos
+* Errores durante el desarrollo
+* Limitaciones de tiempo
+* Complejidad técnica del sistema
+
+---
+
+## Estado del Proyecto
+
+En desarrollo. El sistema es funcional, pero puede mejorarse en validaciones, seguridad y experiencia de usuario.
